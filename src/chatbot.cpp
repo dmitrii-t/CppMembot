@@ -19,7 +19,7 @@ ChatBot::ChatBot() {
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename) {
-    std::cout << "ChatBot Constructor" << std::endl;
+    std::cout << "ChatBot Constructor" << '\n';
 
     // invalidate data handles
     _chatLogic = nullptr;
@@ -30,7 +30,7 @@ ChatBot::ChatBot(std::string filename) {
 }
 
 ChatBot::~ChatBot() {
-    std::cout << "ChatBot Destructor" << std::endl;
+    std::cout << "ChatBot Destructor" << '\n';
 
     // deallocate _image as the ChatBot manages this resource
     if (_image != NULL)  // Attention: wxWidgets used NULL and not nullptr
@@ -42,6 +42,84 @@ ChatBot::~ChatBot() {
 
 //// STUDENT CODE
 ////
+
+// Copy constructor
+ChatBot::ChatBot(const ChatBot& other) {
+    std::cout << "ChatBot Copy Constructor" << '\n';
+
+    // copy owned data
+    _image = new wxBitmap(*other._image);  // create a new copy of the other's _image
+
+    // copy non-owned data
+    _currentNode = other._currentNode;
+    _rootNode    = other._rootNode;
+    _chatLogic   = other._chatLogic;
+}
+
+// Copy assignment operator
+ChatBot& ChatBot::operator=(const ChatBot& other) {
+    std::cout << "ChatBot Copy Assignment Operator" << '\n';
+
+    if (this == &other) {
+        return *this;
+    }
+
+    // copy owned data
+    delete _image;                         // delete the old _image
+    _image = new wxBitmap(*other._image);  // create a new copy of the other's _image
+
+    // copy non-owned data
+    _currentNode = other._currentNode;
+    _rootNode    = other._rootNode;
+    _chatLogic   = other._chatLogic;
+
+    return *this;
+}
+
+// Move constructor
+ChatBot::ChatBot(ChatBot&& other) noexcept {
+    std::cout << "ChatBot Copy Constructor" << '\n';
+
+    // move owned data
+    _image       = other._image;  // Take ownership of other's _image
+    other._image = nullptr;       // Set other's pointer to nullptr
+
+    // move non-owned data
+    _currentNode = other._currentNode;
+    _rootNode    = other._rootNode;
+    _chatLogic   = other._chatLogic;
+
+    // invalidate the other's data
+    other._currentNode = NULL;
+    other._rootNode    = NULL;
+    other._chatLogic   = nullptr;
+}
+
+// Move assignment operator
+ChatBot& ChatBot::operator=(ChatBot&& other) noexcept {
+    std::cout << "ChatBot Move Assignment Operator" << '\n';
+
+    if (this == &other) {
+        return *this;
+    }
+
+    // move owned data
+    delete _image;
+    _image       = other._image;  // Take ownership of other's _image
+    other._image = nullptr;       // Set other's pointer to nullptr
+
+    // move non-owned data
+    _currentNode = other._currentNode;
+    _rootNode    = other._rootNode;
+    _chatLogic   = other._chatLogic;
+
+    // invalidate the other's data
+    other._currentNode = NULL;
+    other._rootNode    = NULL;
+    other._chatLogic   = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
