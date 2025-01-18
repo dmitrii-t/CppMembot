@@ -12,7 +12,7 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot() {
     // invalidate data handles
-    _image     = nullptr;
+    _image     = NULL;
     _chatLogic = nullptr;
     _rootNode  = nullptr;
 }
@@ -78,11 +78,11 @@ ChatBot& ChatBot::operator=(const ChatBot& other) {
 
 // Move constructor
 ChatBot::ChatBot(ChatBot&& other) noexcept {
-    std::cout << "ChatBot Copy Constructor" << '\n';
+    std::cout << "ChatBot Move Constructor" << '\n';
 
     // move owned data
     _image       = other._image;  // Take ownership of other's _image
-    other._image = nullptr;       // Set other's pointer to nullptr
+    other._image = NULL;          // Set other's pointer to NULL
 
     // move non-owned data
     _currentNode = other._currentNode;
@@ -90,8 +90,8 @@ ChatBot::ChatBot(ChatBot&& other) noexcept {
     _chatLogic   = other._chatLogic;
 
     // invalidate the other's data
-    other._currentNode = NULL;
-    other._rootNode    = NULL;
+    other._currentNode = nullptr;
+    other._rootNode    = nullptr;
     other._chatLogic   = nullptr;
 }
 
@@ -106,7 +106,7 @@ ChatBot& ChatBot::operator=(ChatBot&& other) noexcept {
     // move owned data
     delete _image;
     _image       = other._image;  // Take ownership of other's _image
-    other._image = nullptr;       // Set other's pointer to nullptr
+    other._image = NULL;          // Set other's pointer to NULL
 
     // move non-owned data
     _currentNode = other._currentNode;
@@ -114,8 +114,8 @@ ChatBot& ChatBot::operator=(ChatBot&& other) noexcept {
     _chatLogic   = other._chatLogic;
 
     // invalidate the other's data
-    other._currentNode = NULL;
-    other._rootNode    = NULL;
+    other._currentNode = nullptr;
+    other._rootNode    = nullptr;
     other._chatLogic   = nullptr;
 
     return *this;
@@ -165,6 +165,7 @@ void ChatBot::SetCurrentNode(GraphNode* node) {
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string                        answer = answers.at(dis(generator));
 
+    _chatLogic->SetChatbotHandle(this);  // set _chatBot ptr for chatLogic
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
 }
